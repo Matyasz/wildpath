@@ -94,11 +94,14 @@ mod tests {
             Some(p) => { _ = fs::remove_dir_all(p); }
             None => ()
         }
-        
-        assert_eq!(
-            output.sort_by_key( |k| k.as_os_str().to_owned() ),
-            solution.sort_by_key( |k| k.as_os_str().to_owned() )
-        );
+
+        output.sort_by_key( |k| k.as_os_str().to_owned());
+        solution.sort_by_key( |k| k.as_os_str().to_owned());
+
+        dbg!(&output);
+        dbg!(&solution);
+
+        assert_eq!(output, solution);
     }
 
     #[test]
@@ -272,7 +275,7 @@ mod tests {
         );
 
         let solution: Vec<PathBuf> = vec![tdr.join("B").join("C")];
-        
+
         validate(
             resolve(&test_path).unwrap(),
             solution,
