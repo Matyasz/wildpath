@@ -282,4 +282,96 @@ mod tests {
             Some(tdr)
         );
     }
+
+    #[test]
+    fn doc_example() {
+        let tdr = test_setup();
+
+        _ = fs::create_dir(tdr.join("blogs"));
+
+        _ = fs::create_dir(tdr.join("blogs").join("blog_1"));
+        _ = fs::create_dir(tdr.join("blogs").join("blog_1").join("assets"));
+        _ = fs::File::create(tdr.join("blogs").join("blog_1").join("post.txt"));
+        _ = fs::File::create(tdr.join("blogs").join("blog_1").join("assets").join("logo.jpeg"));
+
+        _ = fs::create_dir(tdr.join("blogs").join("blog_2"));
+        _ = fs::create_dir(tdr.join("blogs").join("blog_2").join("assets"));
+        _ = fs::File::create(tdr.join("blogs").join("blog_2").join("post.txt"));
+        _ = fs::File::create(tdr.join("blogs").join("blog_2").join("assets").join("research_notes.txt"));
+        
+        _ = fs::create_dir(tdr.join("videos"));
+        
+        _ = fs::create_dir(tdr.join("videos").join("video_1"));
+        _ = fs::create_dir(tdr.join("videos").join("video_1").join("assets"));
+        _ = fs::File::create(tdr.join("videos").join("video_1").join("script.txt"));
+        _ = fs::File::create(tdr.join("videos").join("video_1").join("assets").join("logo.jpeg"));
+
+        _ = fs::create_dir(tdr.join("videos").join("video_2"));
+        _ = fs::create_dir(tdr.join("videos").join("video_2").join("assets"));
+        _ = fs::File::create(tdr.join("videos").join("video_2").join("script.txt"));
+        _ = fs::File::create(tdr.join("videos").join("video_2").join("assets").join("sound_effect.wav"));
+
+        _ = fs::create_dir(tdr.join("videos").join("video_3"));
+        _ = fs::create_dir(tdr.join("videos").join("video_3").join("assets"));
+        _ = fs::File::create(tdr.join("videos").join("video_3").join("script.txt"));
+        _ = fs::File::create(tdr.join("videos").join("video_3").join("assets").join("new_logo.png"));
+
+
+        let mut test_path = tdr.clone().join("*").join("*").join("*.txt");
+        let mut solution: Vec<PathBuf> = vec![
+            tdr.join("blogs").join("blog_1").join("post.txt"),
+            tdr.join("blogs").join("blog_2").join("post.txt"),
+            tdr.join("videos").join("video_1").join("script.txt"),
+            tdr.join("videos").join("video_2").join("script.txt"),
+            tdr.join("videos").join("video_3").join("script.txt")
+        ];
+
+        validate(
+            resolve(&test_path).unwrap(),
+            solution,
+            None
+        );
+
+        test_path = tdr.clone().join("*").join("*").join("assets").join("*logo*");
+        solution = vec![
+            tdr.join("blogs").join("blog_1").join("assets").join("logo.jpeg"),
+            tdr.join("videos").join("video_1").join("assets").join("logo.jpeg"),
+            tdr.join("videos").join("video_3").join("assets").join("new_logo.png")
+        ];
+
+        validate(
+            resolve(&test_path).unwrap(),
+            solution,
+            None
+        );
+
+        test_path = tdr.clone().join("*").join("*_1").join("assets").join("*logo*");
+        solution = vec![
+            tdr.join("blogs").join("blog_1").join("assets").join("logo.jpeg"),
+            tdr.join("videos").join("video_1").join("assets").join("logo.jpeg")
+        ];
+
+        validate(
+            resolve(&test_path).unwrap(),
+            solution,
+            None
+        );
+
+        _ = fs::create_dir(tdr.join("presentations"));
+        _ = fs::create_dir(tdr.join("presentations").join("presentation_1"));
+        _ = fs::create_dir(tdr.join("presentations").join("presentation_1").join("assets"));
+        _ = fs::File::create(tdr.join("presentations").join("presentation_1").join("assets").join("logo.jpeg"));
+
+        solution = vec![
+            tdr.join("blogs").join("blog_1").join("assets").join("logo.jpeg"),
+            tdr.join("videos").join("video_1").join("assets").join("logo.jpeg"),
+            tdr.join("presentations").join("presentation_1").join("assets").join("logo.jpeg")
+        ];
+
+        validate(
+            resolve(&test_path).unwrap(),
+            solution,
+            Some(tdr)
+        );
+    }
 }
