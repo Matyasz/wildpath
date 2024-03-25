@@ -95,10 +95,13 @@ mod tests {
             None => ()
         }
 
-        assert_eq!(
-            output.sort_by_key( |k| k.as_os_str().to_owned() ),
-            solution.sort_by_key( |k| k.as_os_str().to_owned() )
-        );
+        output.sort_by_key( |k| k.as_os_str().to_owned());
+        solution.sort_by_key( |k| k.as_os_str().to_owned());
+
+        dbg!(&output);
+        dbg!(&solution);
+
+        assert_eq!(output, solution);
     }
 
     #[test]
@@ -260,19 +263,19 @@ mod tests {
     #[test]
     fn symlinks_unix() {
         let tdr = test_setup();
-        let test_path = tdr.clone().join("A").join("*");
+        let test_path = tdr.clone().join("A").join("*").join("*");
 
         _ = fs::create_dir(tdr.join("A"));
         _ = fs::create_dir(tdr.join("B"));
         _ = fs::create_dir(tdr.join("B").join("C"));
 
         _ = std::os::unix::fs::symlink(
-            tdr.join("B").join("C"),
+            tdr.join("B"),
             tdr.join("A").join("X")
         );
 
         let solution: Vec<PathBuf> = vec![tdr.join("B").join("C")];
-        
+
         validate(
             resolve(&test_path).unwrap(),
             solution,
