@@ -32,7 +32,7 @@ root
 If you want to find all of the text for the content, you can call
 
 ```rust
-resolve(Path::from("/root/*/*/*.txt"))
+resolve(&Path::new("/root/*/*/*.txt").unwrap())
 ```
 which will return all of the `txt` files that are 3 layers deep:
 
@@ -46,12 +46,11 @@ which will return all of the `txt` files that are 3 layers deep:
 ]
 ```
 
-If you want to see all of the versions of logos that have been used, you can call 
-
+If you want to see all of the versions of logos that have been used, you can call
 ```rust
-resolve(Path::from("/root/*/*/assets/*logo*"))
-
+resolve(&Path::new("/root/*/*/assets/*logo*").unwrap())
 ```
+
 which will return 
 ```rust
 [
@@ -61,9 +60,9 @@ which will return
 ]
 ```
 
-Or if you want to see the logos used for the original blog and video, you can call 
+Or if you want to see the logos used for the original blog and video, you can call
 ```rust
-resolve(Path::from("/root/*/*_1/assets/*logo*"))
+resolve(&Path::new("/root/*/*_1/assets/*logo*").unwrap())
 ```
 
 which will return
