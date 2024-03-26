@@ -2,6 +2,14 @@
 name = "wildpath"
 version = "0.1.0"
 edition = "2021"
+authors = ["Taylor Matyasz <tjmatyasz@gmail.com>"]
+license = "MIT"
+description = "A library to find all filepaths that fit a given pattern"
+readme = "README.md"
+homepage = "https://github.com/Matyasz/wildpath"
+repository = "https://github.com/Matyasz/wildpath"
+keywords = ["cli", "ls", "wildcard"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 regex = "1.10.3"

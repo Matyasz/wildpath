@@ -31,7 +31,7 @@ fn get_next_file_layer(current_layer: Vec<PathBuf>, next_element: &OsStr) -> Vec
         
         let mut candidates = match next_element.to_str().unwrap().contains("*") {
             false => {
-                if p.join(next_element).try_exists().unwrap() {
+                if p.join(next_element).try_exists().expect(format!("Failed to determine if {:?} exists in {:?}", next_element, p).as_str()) {
                     vec![PathBuf::from(next_element)]
                 } else {
                     vec![]
@@ -40,17 +40,17 @@ fn get_next_file_layer(current_layer: Vec<PathBuf>, next_element: &OsStr) -> Vec
             true => {
                 let re = Regex::new(
                     &format!("^{}$", &next_element.to_str().unwrap().replace(".", "[.]").replace("*", ".*"))
-                ).unwrap();
+                ).expect(format!("Failed to create regex from {:?}", next_element).as_str());
 
                 let regex_filter = |x: PathBuf| -> Option<PathBuf> {
-                    if re.is_match(x.iter().last().unwrap().to_str().unwrap()) {
+                    if re.is_match(x.iter().last().expect(format!("Failed to parse with regex {:?}", x).as_str()).to_str().unwrap()) {
                         return Some(p.join(x))
                     } else {
                         return None
                     };
                 };
 
-                fs::read_dir(p).unwrap()  // FIX WHEN SOME ENTRIES ARE NOT DIRECTORIES
+                fs::read_dir(p).expect(format!("Failed to read directory: {:?}", p).as_str())
                     .map(|x| PathBuf::from(x.unwrap().file_name()))
                     .filter_map(regex_filter)
                     .collect()
@@ -60,7 +60,7 @@ fn get_next_file_layer(current_layer: Vec<PathBuf>, next_element: &OsStr) -> Vec
         candidates = candidates.into_iter()
             .filter_map(|x|
                 if x.is_symlink() {
-                    Some(x.read_link().unwrap())
+                    Some(x.read_link().expect(format!("Failed to follow symlink from {:?}", x).as_str()))
                 }
                 else {
                     Some(x)
@@ -84,7 +84,7 @@ mod tests {
     fn test_setup() -> PathBuf {
         let test_dir = Alphanumeric.sample_string(&mut rand::thread_rng(), 16);
 
-        let mut tdr = std::env::temp_dir(); // THIS DOESN'T DELETE AFTER RUNNING????
+        let mut tdr = std::env::temp_dir();
         tdr.push(test_dir);
         _ = fs::create_dir(&tdr);
 
