@@ -2,8 +2,14 @@
 name = "wildpath-cli"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Taylor Matyasz <tjmatyasz@gmail.com>"]
+license = "MIT"
+description = "A CLI implementation for the wildpath library"
+readme = "README.md"
+homepage = "https://github.com/Matyasz/wildpath"
+repository = "https://github.com/Matyasz/wildpath"
+keywords = ["cli", "ls", "wildcard"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 wildpath = { path = "../wildpath" }

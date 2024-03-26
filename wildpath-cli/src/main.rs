@@ -1,12 +1,8 @@
-use std::{env, path::Path};
-
 use wildpath::resolve;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let path: &String = &args[1];
-
-    let res = resolve(&Path::new(path)).unwrap();
+    let path: &String = &std::env::args().nth(1).expect("Invalid argument for path");
+    let res = resolve(&std::path::Path::new(path)).expect("Failure to resolve path");
 
     for p in res {
         println!("{}", p.into_os_string().into_string().unwrap());
