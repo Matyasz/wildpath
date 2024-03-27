@@ -5,11 +5,11 @@ edition = "2021"
 authors = ["Taylor Matyasz <tjmatyasz@gmail.com>"]
 license = "MIT"
 description = "A CLI implementation for the wildpath library"
-readme = "README.md"
+readme = "../README.md"
 homepage = "https://github.com/Matyasz/wildpath"
 repository = "https://github.com/Matyasz/wildpath"
 keywords = ["cli", "ls", "wildcard"]
 categories = ["command-line-utilities"]
 
 [dependencies]
-wildpath = { path = "../wildpath" }
+wildpath = { path = "../wildpath", version = "0.1"}
