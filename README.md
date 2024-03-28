@@ -1,7 +1,12 @@
 # wildpath
-A rust library to resolve wildcards in filepaths on UNIX systems.
+![Crates.io Version](https://img.shields.io/crates/v/wildpath?logo=rust&label=wildpath)
+![Crates.io Version](https://img.shields.io/crates/v/wildpath-cli?logo=rust&label=wildpath-ci)
 
-The library exposes one method, `resolve`, which will take a filepath with wildcards and return everything on the filesystem that fits the given description.
+A rust library, CLI, and WASM component to resolve wildcards in filepaths on UNIX systems and WASM runtimes.
+
+The library exposes one method, `resolve`, which will take a filepath with wildcards (`&std::fs::Path`) and return everything on the filesystem that fits the given description (`Vec<std::fs::PathBuf>`).
+
+`wildpath` operates using rust standard library methods for examining the file system in `stf::fs`, avoiding the potential security risks with directly running `ls` as a shell command using user input with `std::process`.
 
 For example, consider a file system that looks like the following:
 ```
@@ -29,7 +34,7 @@ root
         │   └── new_logo.png
         └── script.txt
 ```
-If you want to find all of the text for the content, you can call
+Using the library, if you want to find all of the text for the content you can call
 
 ```rust
 resolve(&Path::new("/root/*/*/*.txt").unwrap())
@@ -88,6 +93,24 @@ root
 ```
 and pass a path of `/root/A/*/*`, you will receive `[/root/B/c.png]` as the output.
 
+# wildpath-cli
+The library has also ben wrapped in a CLI tool you can install, `wildpath-cli`. You can run the first example in the README by running
+
+```sh
+wildpath-cli "/root/*/*/*.txt"
+```
+
+Yes - this is just worse `ls`. It mostly exits to facilitate the following:
+
+# WASM
+The `wildpath-cli` binary has also been built with the `wasm32-wasi` target and deployed to the [Wasmer registry](https://wasmer.io/matyasz/wildpath-cli). It can be invoked with 
+
+```sh
+wasmer run matyasz/wildpath-cli "/wh*tever/path/y*u/want/"
+```
+
+
 ### Limitations
-- `wildpath` has only been tested on a UNIX system. For now, it may not work on Windows.
+- `wildpath` has only been tested on a UNIX system and the Wasmer WASM runtime. For now, it may not work on Windows.
+- Paths need to be in quotes.
 - It will also not respect `.` or `..` in a path. For now, these will need to be resolved prior to using the library.
