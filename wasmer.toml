@@ -1,0 +1,21 @@
+[package]
+name = 'matyasz/wildpath-cli'
+version = '0.1.0'
+description = 'A CLI implementation for the wildpath library'
+license = 'MIT'
+readme = 'README.md'
+homepage = 'https://github.com/Matyasz/wildpath'
+repository = 'https://github.com/Matyasz/wildpath'
+
+[[module]]
+name = 'wildpath-cli'
+source = './target/wasm32-wasi/release/wildpath-cli.wasm'
+abi = 'wasi'
+
+[module.interfaces]
+wasi = '0.1.0-unstable'
+
+[[command]]
+name = 'wildpath-cli'
+module = 'wildpath-cli'
+runner = 'wasi'
