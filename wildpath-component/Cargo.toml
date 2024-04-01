@@ -1,0 +1,15 @@
+[package]
+name = "wildpath-component"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.component]
+package = "component:wildpath"
+
+[package.metadata.component.dependencies]
+
+[dependencies]
+bitflags = "2.5.0"
+wit-bindgen-rt = "0.23.0"
+
+wildpath = { path = "../wildpath", version = "0.1"}
